@@ -3,6 +3,7 @@ package io.github.mayo8432.luckypillars.handler
 import de.c4vxl.gamemanager.gma.event.game.GameStartedEvent
 import de.c4vxl.gamemanager.gma.event.player.GamePlayerDeathEvent
 import de.c4vxl.gamemanager.gma.event.player.GamePlayerJoinedEvent
+import de.c4vxl.gamemanager.gma.event.player.GamePlayerRespawnEvent
 import io.github.mayo8432.luckypillars.Main
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -17,7 +18,7 @@ class GameHandler : Listener {
     }
 
     @EventHandler
-    fun onDeath(event: GamePlayerDeathEvent) {
+    fun onRespawn(event: GamePlayerRespawnEvent) {
         event.player.eliminate()
     }
 
