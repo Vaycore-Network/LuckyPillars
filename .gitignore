@@ -46,3 +46,6 @@ bin/
 
 ### Server ###
 /run
+
+## GMA ###
+downloadGMA.sh
