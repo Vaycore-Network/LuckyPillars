@@ -21,7 +21,7 @@ class GameHandler : Listener {
 
     @EventHandler
     fun onRespawn(event: GamePlayerRespawnEvent) {
-        event.player.eliminate()
+        event.player.eliminate(event.killer)
     }
 
     @EventHandler
@@ -29,21 +29,26 @@ class GameHandler : Listener {
 
         MovementHandler.startingGames.add(event.game)
 
+        event.game.playerManager.alivePlayers.forEach {
+            it.bukkitPlayer.sendTitlePart(TitlePart.TITLE, Component.text("3.."))
+        }
         Bukkit.getScheduler().runTaskLater(Main.instance, Runnable {
-            MovementHandler.startingGames.remove(event.game)
             event.game.playerManager.alivePlayers.forEach {
-                it.bukkitPlayer.sendTitlePart(TitlePart.TITLE, Component.text("3.."))
+                it.bukkitPlayer.sendTitlePart(TitlePart.TITLE, Component.text("2.."))
             }
             Bukkit.getScheduler().runTaskLater(Main.instance, Runnable {
                 event.game.playerManager.alivePlayers.forEach {
-                    it.bukkitPlayer.sendTitlePart(TitlePart.TITLE, Component.text("2.."))
+                    it.bukkitPlayer.sendTitlePart(TitlePart.TITLE, Component.text("1.."))
                 }
-                Bukkit.getScheduler().runTaskLater(Main.instance, Runnable {
-                    event.game.playerManager.alivePlayers.forEach {
-                        it.bukkitPlayer.sendTitlePart(TitlePart.TITLE, Component.text("1.."))
-                    }
-                }, 1L * 20L)
-            },1L * 20L)
+            }, 1L * 20L)
+        },1L * 20L)
+
+
+        Bukkit.getScheduler().runTaskLater(Main.instance, Runnable {
+            MovementHandler.startingGames.remove(event.game)
+            event.game.playerManager.alivePlayers.forEach {
+                it.bukkitPlayer.clearTitle()
+            }
 
             val blockedMaterials = Material.entries.filter { it in setOf(
                 Material.BARRIER,
@@ -61,6 +66,9 @@ class GameHandler : Listener {
                 Material.END_PORTAL,
                 Material.NETHER_PORTAL,
                 Material.ENCHANTED_BOOK,
+                Material.WRITTEN_BOOK,
+                Material.AIR,
+                Material.TEST_BLOCK
 
                 )
                     || it.name.contains("ARMOR_TRIM")
