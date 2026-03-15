@@ -1,10 +1,11 @@
-package io.github.mayo8432.luckypillars.handler
+package io.github.mayo8432.luckypillars.game
 
 import de.c4vxl.gamemanager.gma.event.game.GameStartedEvent
-import de.c4vxl.gamemanager.gma.event.player.GamePlayerDeathEvent
 import de.c4vxl.gamemanager.gma.event.player.GamePlayerJoinedEvent
 import de.c4vxl.gamemanager.gma.event.player.GamePlayerRespawnEvent
+import de.c4vxl.gamemanager.gma.game.Game
 import io.github.mayo8432.luckypillars.Main
+import io.github.mayo8432.luckypillars.handler.MovementHandler
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.title.TitlePart
 import org.bukkit.Bukkit
@@ -15,28 +16,37 @@ import org.bukkit.inventory.ItemStack
 
 class GameHandler : Listener {
 
+    // Registering the event in the plugin manager (standard procedure)
     init {
-        Bukkit.getPluginManager().registerEvents(this, Main.instance)
+        Bukkit.getPluginManager().registerEvents(this, Main.Companion.instance)
     }
 
+    // @param: A list of all games in the starting stage
+    companion object {
+        val startingGames = mutableListOf<Game>()
+    }
+
+    // This eliminates the player on respawn to dodge creating a weird ghost state to the player where he is not alive nor dead (If you'd do it on the Death Event)
     @EventHandler
     fun onRespawn(event: GamePlayerRespawnEvent) {
+
+        // Using the event.killer to implement the GMA stats system
         event.player.eliminate(event.killer)
     }
 
     @EventHandler
     fun onGameStart(event: GameStartedEvent) {
 
-        MovementHandler.startingGames.add(event.game)
+        MovementHandler.Companion.startingGames.add(event.game)
 
         event.game.playerManager.alivePlayers.forEach {
             it.bukkitPlayer.sendTitlePart(TitlePart.TITLE, Component.text("3.."))
         }
-        Bukkit.getScheduler().runTaskLater(Main.instance, Runnable {
+        Bukkit.getScheduler().runTaskLater(Main.Companion.instance, Runnable {
             event.game.playerManager.alivePlayers.forEach {
                 it.bukkitPlayer.sendTitlePart(TitlePart.TITLE, Component.text("2.."))
             }
-            Bukkit.getScheduler().runTaskLater(Main.instance, Runnable {
+            Bukkit.getScheduler().runTaskLater(Main.Companion.instance, Runnable {
                 event.game.playerManager.alivePlayers.forEach {
                     it.bukkitPlayer.sendTitlePart(TitlePart.TITLE, Component.text("1.."))
                 }
@@ -44,8 +54,8 @@ class GameHandler : Listener {
         },1L * 20L)
 
 
-        Bukkit.getScheduler().runTaskLater(Main.instance, Runnable {
-            MovementHandler.startingGames.remove(event.game)
+        Bukkit.getScheduler().runTaskLater(Main.Companion.instance, Runnable {
+            MovementHandler.Companion.startingGames.remove(event.game)
             event.game.playerManager.alivePlayers.forEach {
                 it.bukkitPlayer.clearTitle()
             }
@@ -82,7 +92,8 @@ class GameHandler : Listener {
 
             var allowedMaterials = Material.entries.filter { it.isItem && it !in blockedMaterials }
 
-            Bukkit.getScheduler().runTaskTimer(Main.instance, Runnable {
+            Bukkit.getScheduler().runTaskTimer(
+                Main.Companion.instance, Runnable {
                 event.game.playerManager.alivePlayers.forEach {
                     val randomItem = ItemStack(allowedMaterials.random())
                     it.bukkitPlayer.give(randomItem)
