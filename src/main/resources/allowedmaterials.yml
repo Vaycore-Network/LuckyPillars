@@ -1,0 +1,33 @@
+mainMaterial:
+  - contains: "EGG"
+    weight: 3
+  - contains: "MACE"
+    weight: 1
+  - contains: "SPEAR"
+    weight: 2
+  - contains: "ELYTRA"
+    weight: 1
+  - contains: "FISHING"
+    weight: 2
+  - contains: "BUCKET"
+    weight: 2
+  - contains: "AXE"
+    weight: 2
+  - contains: "SWORD"
+    weight: 2
+  - contains: "TNT"
+    weight: 1
+  - contains: "TRIDENT"
+    weight: 2
+  - contains: "BOW"
+    weight: 1
+  - contains: "TOTEM"
+    weight: 1
+  - contains: "HELMET"
+    weight: 3
+  - contains: "CHESTPLATE"
+    weight: 1
+  - contains: "LEGGINGS"
+    weight: 2
+  - contains: "SHOES"
+    weight: 3

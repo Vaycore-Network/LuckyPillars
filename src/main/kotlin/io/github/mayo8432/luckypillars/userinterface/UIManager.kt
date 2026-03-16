@@ -2,6 +2,7 @@ package io.github.mayo8432.luckypillars.userinterface
 
 import de.c4vxl.gamemanager.gma.game.Game
 import io.github.mayo8432.luckypillars.Main
+import io.github.mayo8432.luckypillars.game.GameHandler
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.title.TitlePart
@@ -23,10 +24,24 @@ class UIManager {
                 // Sends for example: 5.., 4.., 3.., and so on
                 game.playerManager.alivePlayers.forEach {
 
+                    // Sending a Title Part to the player: 5.., 4.., 3.. and so on
                     it.bukkitPlayer.sendTitlePart(TitlePart.TITLE, Component.text("$i.."))
                 }
             }, (timeInSeconds - i) * 20L)   // *20L due to 20 Minecraft Ticks being 1 second
         }
+
+        // This runTaskLater removes the UI Title Countdown and removes the starting state from the game
+        Bukkit.getScheduler().runTaskLater(Main.instance, Runnable {
+
+            // Removes the game from the starting phase
+            GameHandler.startingGames.remove(game)
+
+            game.playerManager.alivePlayers.forEach {
+
+                // Clears the Title Part off the player
+                it.bukkitPlayer.clearTitle()
+            }
+        }, timeInSeconds * 20L)     // *20L due to 20 Minecraft Ticks being 1 second
     }
 
     fun startItemProgressBar(game: Game, ticksPerStep: Long, ticksForProgressBarCompletion: Long) {
@@ -84,5 +99,4 @@ class UIManager {
         return Component.text(green, NamedTextColor.GREEN)
             .append(Component.text(gray, NamedTextColor.GRAY))
     }
-
 }
