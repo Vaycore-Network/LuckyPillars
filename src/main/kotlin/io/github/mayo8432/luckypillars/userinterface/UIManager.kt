@@ -8,13 +8,12 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.title.TitlePart
 import org.bukkit.Bukkit
 
-class UIManager {
+object UIManager {
 
     // @param: all running Tasks for the game instance
     private val runningTasks = mutableMapOf<Game, Int>()
 
-    fun sendStartingGameCountdown(game: Game, timeInSeconds: Int) {
-
+    fun sendStartingGameCountdown(game: Game, timeInSeconds: Int, onComplete: (() -> Unit)? = null) {
         // Sends a countdown to the player
         for (i in timeInSeconds downTo 1) {
 
@@ -35,16 +34,16 @@ class UIManager {
 
             // Removes the game from the starting phase
             GameHandler.startingGames.remove(game)
-
             game.playerManager.alivePlayers.forEach {
-
                 // Clears the Title Part off the player
                 it.bukkitPlayer.clearTitle()
             }
+
+            onComplete?.invoke()
         }, timeInSeconds * 20L)     // *20L due to 20 Minecraft Ticks being 1 second
     }
 
-    fun startItemProgressBar(game: Game, ticksPerStep: Long, ticksForProgressBarCompletion: Long) {
+    fun startItemProgressBar(game: Game, ticksPerStep: Long, ticksForProgressBarCompletion: Long, onRun: () -> Unit) {
 
         // If a task is already running -> don't start another one
         if (runningTasks.containsKey(game)) return
@@ -53,11 +52,7 @@ class UIManager {
         var elapsedTicks = 0L
 
         val taskId = Bukkit.getScheduler().runTaskTimer(Main.instance, Runnable {
-
-            // TODO:
             if (!game.isRunning) {
-
-                // TODO:
                 stopItemProgressBar(game)
                 return@Runnable
             }
@@ -71,6 +66,9 @@ class UIManager {
             game.playerManager.alivePlayers.forEach {
                 it.bukkitPlayer.sendActionBar(bar)
             }
+
+            if (elapsedTicks == 0L)
+                onRun.invoke()
 
             // Increase Ticks
             elapsedTicks += 1

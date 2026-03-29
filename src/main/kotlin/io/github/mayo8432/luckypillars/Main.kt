@@ -27,6 +27,9 @@ class Main : JavaPlugin() {
 
         logger.info("[+] ${this.name} has been enabled!")
 
+        // Save config
+        saveResource("allowedmaterials.yml", false)
+
         // Introducing Listeners
         GameHandler()
         MovementHandler()

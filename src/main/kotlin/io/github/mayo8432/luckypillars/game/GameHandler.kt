@@ -9,6 +9,7 @@ import io.github.mayo8432.luckypillars.userinterface.UIManager
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+
 class GameHandler : Listener {
 
     // Registering the event in the plugin manager (standard procedure)
@@ -20,9 +21,6 @@ class GameHandler : Listener {
     companion object {
         val startingGames = mutableListOf<Game>()
     }
-
-    // Introducing UIManager
-    val uiManager = UIManager()
 
     // This eliminates the player on respawn to dodge creating a weird ghost state to the player where he is not alive nor dead (If you'd do it on the Death Event)
     @EventHandler
@@ -39,7 +37,9 @@ class GameHandler : Listener {
         startingGames.add(event.game)
 
         //Gives each player a countdown
-        uiManager.sendStartingGameCountdown(event.game, 5)      // 5 is customizable
+        UIManager.sendStartingGameCountdown(event.game, 5) {
+            ItemSpawnHandler.startGameCycle(event.game, 6) // or 7
+        }
     }
 
     @EventHandler

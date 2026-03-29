@@ -1,33 +1,20 @@
-mainMaterial:
-  - contains: "EGG"
-    weight: 3
-  - contains: "MACE"
-    weight: 1
-  - contains: "SPEAR"
-    weight: 2
-  - contains: "ELYTRA"
-    weight: 1
-  - contains: "FISHING"
-    weight: 2
-  - contains: "BUCKET"
-    weight: 2
-  - contains: "AXE"
-    weight: 2
-  - contains: "SWORD"
-    weight: 2
-  - contains: "TNT"
-    weight: 1
-  - contains: "TRIDENT"
-    weight: 2
-  - contains: "BOW"
-    weight: 1
-  - contains: "TOTEM"
-    weight: 1
-  - contains: "HELMET"
-    weight: 3
-  - contains: "CHESTPLATE"
-    weight: 1
-  - contains: "LEGGINGS"
-    weight: 2
-  - contains: "SHOES"
-    weight: 3
+EGG: 3
+BOOTS : 3
+MACE : 1
+ELYTRA : 1
+SPEAR : 2
+FISHING : 2
+BUCKET : 2
+SWORD : 2
+TNT : 1
+TRIDENT : 2
+BOW : 1
+TOTEM : 1
+HELMET : 3
+CHESTPLATE : 1
+LEGGINGS : 2
+PICKAXE : 2
+
+BLOCK : 10
+LOG : 5
+PLANKS : 8

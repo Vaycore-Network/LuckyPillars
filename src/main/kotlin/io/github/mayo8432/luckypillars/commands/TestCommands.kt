@@ -8,9 +8,6 @@ import dev.jorel.commandapi.kotlindsl.playerExecutor
 import io.github.mayo8432.luckypillars.userinterface.UIManager
 
 class TestCommands {
-
-    val uiManager = UIManager()
-
     val command = commandTree("test") {
         withUsage("/test")
         withAliases("sg")
@@ -24,7 +21,7 @@ class TestCommands {
                     return@playerExecutor
                 }
 
-                uiManager.sendStartingGameCountdown(game, 5)
+                UIManager.sendStartingGameCountdown(game, 5)
             }
         }
         literalArgument("startProgressbar") {
@@ -35,7 +32,7 @@ class TestCommands {
                     return@playerExecutor
                 }
 
-                uiManager.startItemProgressBar(game, 5, 60)
+                UIManager.startItemProgressBar(game, 5, 60) {}
             }
         }
     }

@@ -3,6 +3,7 @@ package io.github.mayo8432.luckypillars.handler
 import de.c4vxl.gamemanager.gma.game.Game
 import de.c4vxl.gamemanager.gma.player.GMAPlayer.Companion.gma
 import io.github.mayo8432.luckypillars.Main
+import io.github.mayo8432.luckypillars.game.GameHandler.Companion.startingGames
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -12,10 +13,6 @@ class MovementHandler : Listener {
 
     init {
         Bukkit.getPluginManager().registerEvents(this, Main.instance)
-    }
-
-    companion object {
-        val startingGames = mutableListOf<Game>()
     }
 
     @EventHandler
