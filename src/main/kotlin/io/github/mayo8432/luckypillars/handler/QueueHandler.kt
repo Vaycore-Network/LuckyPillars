@@ -47,7 +47,7 @@ class QueueHandler : Listener {
     fun onJoin(event: PlayerJoinEvent) {
         Bukkit.getScheduler().runTaskLater(Main.instance, Runnable {
             send(event.player.gma)
-        }, 10)
+        }, 20)
     }
 
     @EventHandler
