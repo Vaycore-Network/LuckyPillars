@@ -35,7 +35,7 @@ class Main : JavaPlugin() {
         MovementHandler()
 
         // Introducing Commands
-        TestCommands()
+        // TestCommands()
     }
 
     override fun onDisable() {
